@@ -13,13 +13,10 @@ enum AppServices {
     
     static let authService: AuthServiceProtocol = FirebaseAuthService()
     static let userProfileService: UserProfileServiceProtocol = FirestoreUserProfileService()
-    // MARK: - Onboarding
-
     static let onboardingService: OnboardingServiceProtocol = FirestoreOnboardingService()
-    
+    static let diaryCardService: DiaryCardServiceProtocol = DiaryCardService() // ✅ Added
+
     // MARK: - Future Services
-    
-    // static let diaryCardService: DiaryCardServiceProtocol = FirestoreDiaryCardService()
     // static let notificationService: NotificationServiceProtocol = ...
     
     // Add more services as your app grows
