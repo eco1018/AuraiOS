@@ -18,13 +18,14 @@ final class DiaryCardCoordinator: ObservableObject {
 
     @Published var currentStep: DiaryCardStep = .emotions
     @Published var viewModel: DiaryCardViewModel
+    @Published var timeOfDay: String
 
     // MARK: - Init
 
     init(userID: String, timeOfDay: String) {
         self.userID = userID
-        let viewModel = DiaryCardViewModel(userID: userID)
-        self.viewModel = viewModel
+        self.timeOfDay = timeOfDay
+        self.viewModel = DiaryCardViewModel(userID: userID)
     }
 
     // MARK: - Navigation
@@ -37,10 +38,10 @@ final class DiaryCardCoordinator: ObservableObject {
         currentStep = currentStep.previous()
     }
 
-    // MARK: - Reset
+    // MARK: - Reset (Optional)
 
     func restart() {
         currentStep = .emotions
-        viewModel = DiaryCardViewModel(userID: userID) // reset fresh entry
+        viewModel = DiaryCardViewModel(userID: userID)
     }
 }

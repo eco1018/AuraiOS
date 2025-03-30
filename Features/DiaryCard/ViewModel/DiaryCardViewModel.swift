@@ -20,18 +20,18 @@ final class DiaryCardViewModel: ObservableObject {
 
     // MARK: - Init
 
-    init(userID: String, diaryCardService: DiaryCardServiceProtocol = AppServices.diaryCardService) {
+    init(userID: String, timeOfDay: String, diaryCardService: DiaryCardServiceProtocol = AppServices.diaryCardService) {
         self.userID = userID
         self.diaryCardService = diaryCardService
-        self.currentEntry = DiaryEntry.empty(for: userID, timeOfDay: "Morning") // Or "Evening"
+        self.currentEntry = DiaryEntry.empty(for: userID, timeOfDay: timeOfDay) // ✅ Uses your new helper
     }
 
     // MARK: - Actions
 
     func updateEmotion(id: String, value: Int) {
-        if let index = currentEntry.emotions.firstIndex(where: { $0.id == id }) {
-            currentEntry.emotions[index].value = value
-            currentEntry.emotions[index].timestamp = Date()
+        if let index = currentEntry.emotionRatings.firstIndex(where: { $0.id == id }) {
+            currentEntry.emotionRatings[index].value = value
+            currentEntry.emotionRatings[index].timestamp = Date()
         }
     }
 
