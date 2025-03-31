@@ -1,3 +1,4 @@
+
 //
 //  AuthViewModel.swift
 //  Aura_iOS
@@ -15,9 +16,10 @@ final class AuthViewModel: ObservableObject {
     
     // MARK: - Dependencies
     
+    private let appCoordinator: AppCoordinator
     private let authService: AuthServiceProtocol
     private let userProfileService: UserProfileServiceProtocol
-    
+
     // MARK: - Published App State
     
     @Published var isSignedIn: Bool = false
@@ -27,11 +29,14 @@ final class AuthViewModel: ObservableObject {
     // MARK: - Init
     
     init(
+        appCoordinator: AppCoordinator,
         authService: AuthServiceProtocol = FirebaseAuthService(),
         userProfileService: UserProfileServiceProtocol = FirestoreUserProfileService()
     ) {
+        self.appCoordinator = appCoordinator
         self.authService = authService
         self.userProfileService = userProfileService
+        
         Task {
             await listenToAuthState()
         }
@@ -91,6 +96,7 @@ final class AuthViewModel: ObservableObject {
         self.isSignedIn = false
         self.userProfile = nil
         self.onboardingStep = nil
+        appCoordinator.resetAppState()
     }
     
     // MARK: - Auth Listener
@@ -101,11 +107,14 @@ final class AuthViewModel: ObservableObject {
             Task {
                 if let user = user {
                     self.isSignedIn = true
+                    self.appCoordinator.isLoggedIn = true
+                    self.appCoordinator.currentUserID = user.uid
                     try? await self.loadUserProfile(for: user.uid)
                 } else {
                     self.isSignedIn = false
                     self.userProfile = nil
                     self.onboardingStep = nil
+                    self.appCoordinator.resetAppState()
                 }
             }
         }
@@ -117,6 +126,7 @@ final class AuthViewModel: ObservableObject {
         let profile = try await userProfileService.loadUserProfile(for: userID)
         self.userProfile = profile
         self.onboardingStep = profile.hasCompletedOnboarding ? nil : .welcome
+        self.appCoordinator.hasCompletedOnboarding = profile.hasCompletedOnboarding
     }
     
     func updateUserProfile(_ updatedProfile: UserProfile) async {
@@ -125,6 +135,7 @@ final class AuthViewModel: ObservableObject {
             try await userProfileService.saveUserProfile(updatedProfile, for: uid)
             self.userProfile = updatedProfile
             self.onboardingStep = updatedProfile.hasCompletedOnboarding ? nil : onboardingStep
+            self.appCoordinator.hasCompletedOnboarding = updatedProfile.hasCompletedOnboarding
         } catch {
             print("Failed to update profile: \(error)")
         }

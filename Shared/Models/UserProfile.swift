@@ -25,6 +25,7 @@ struct UserProfile: Codable, Identifiable {
     // MARK: - Medication Tracking
     
     var takesMedications: Bool         // Onboarding flag: Do they take medications?
+    var medications: [Medication]?    // User Medications
     
     // MARK: - Notification Reminders
     

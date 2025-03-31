@@ -4,6 +4,8 @@
 //
 //  Created by Ella A. Sadduq on 3/30/25.
 //
+
+
 import Foundation
 
 /// Stores the user’s daily reminder settings for completing the DBT Diary Card.
@@ -23,11 +25,6 @@ struct NotificationPreference: Codable, Identifiable {
     /// The selected evening reminder time (if applicable).
     var eveningReminderTime: DateComponents?
     
-    // MARK: - Future Reminders (e.g., Medications, Skills)
-
-    // var medicationReminderTime: DateComponents?
-    // var customReminders: [CustomReminder]?
-
     // MARK: - Metadata
     
     var createdAt: Date

@@ -36,20 +36,20 @@ struct OnboardingFlowView: View {
                 ActionsIntroStepView()
             case .actionsSelection:
                 ActionsSelectionStepView()
-            case .actionsTransition:
-                ActionsTransitionStepView()
+//            case .actionsTransition:
+//                ActionsTransitionStepView()
             case .urgesIntro:
                 UrgesIntroStepView()
             case .urgesSelection:
                 UrgesSelectionStepView()
-            case .urgesTransition:
-                UrgesTransitionStepView()
+//            case .urgesTransition:
+//                UrgesTransitionStepView()
             case .goalsIntro:
                 GoalsIntroStepView()
             case .goalsSelection:
                 GoalsSelectionStepView()
-            case .goalsTransition:
-                GoalsTransitionStepView()
+//            case .goalsTransition:
+//                GoalsTransitionStepView()
             case .medicationsIntro:
                 MedicationsIntroStepView()
             case .medicationAdding:

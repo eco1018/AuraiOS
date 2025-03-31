@@ -5,31 +5,45 @@
 //  Created by Ella A. Sadduq on 3/30/25.
 //
 
+// RootView.swift
+// Aura_iOS
+
 import SwiftUI
 
 struct RootView: View {
-
-    @StateObject private var authVM = AuthViewModel()
+    
+    // MARK: - Coordinators and ViewModels
+    @StateObject private var appCoordinator = AppCoordinator()
+    @StateObject private var authVM: AuthViewModel
     @StateObject private var onboardingCoordinator = OnboardingCoordinator()
     @StateObject private var onboardingVM = OnboardingViewModel(
         onboardingService: AppServices.onboardingService
     )
-
+    
     @State private var showingDiaryCard = false
+
+    // MARK: - Init
+    init() {
+        let coordinator = AppCoordinator()
+        _appCoordinator = StateObject(wrappedValue: coordinator)
+        _authVM = StateObject(wrappedValue: AuthViewModel(appCoordinator: coordinator))
+    }
 
     var body: some View {
         Group {
-            if !authVM.isSignedIn {
+            if !appCoordinator.isLoggedIn {
                 AuthFlowView()
                     .environmentObject(authVM)
+                    .environmentObject(appCoordinator)
 
-            } else if let step = authVM.onboardingStep {
+            } else if !appCoordinator.hasCompletedOnboarding {
                 OnboardingFlowView()
                     .environmentObject(authVM)
+                    .environmentObject(appCoordinator)
                     .environmentObject(onboardingCoordinator)
                     .environmentObject(onboardingVM)
                     .onAppear {
-                        if let uid = authVM.userID {
+                        if let uid = appCoordinator.currentUserID {
                             onboardingCoordinator.enableAutoSave(using: onboardingVM, userID: uid)
                         }
                     }
@@ -39,20 +53,31 @@ struct RootView: View {
                     showingDiaryCard = true
                 })
                 .environmentObject(authVM)
+                .environmentObject(appCoordinator)
                 .sheet(isPresented: $showingDiaryCard) {
-                    if let uid = authVM.userID {
+                    if let uid = appCoordinator.currentUserID {
                         DiaryCardFlowView()
                             .environmentObject(DiaryCardCoordinator(
                                 userID: uid,
                                 timeOfDay: resolveTimeOfDay()
                             ))
+                            .environmentObject(appCoordinator)
                     } else {
                         Text("Missing User ID")
                     }
                 }
 
             } else {
-                ProgressView("Loading...")
+                // 👇 Graceful fallback in case of delayed profile fetch
+                ProgressView("Loading profile...")
+                    .onAppear {
+                        if let uid = appCoordinator.currentUserID,
+                           authVM.userProfile == nil {
+                            Task {
+                                try? await authVM.fetchUserProfileIfNeeded(for: uid)
+                            }
+                        }
+                    }
             }
         }
     }
