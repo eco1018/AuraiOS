@@ -57,7 +57,7 @@ final class DiaryCardViewModel: ObservableObject {
         currentEntry.tookMedications = tookMedications
     }
 
-    func setDiaryNote(_ text: String) {
+    func updateDiaryNote(_ text: String) {
         currentEntry.diaryNote = text
     }
 

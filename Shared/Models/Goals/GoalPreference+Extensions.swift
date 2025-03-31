@@ -1,3 +1,5 @@
+
+
 //
 //  GoalPreference+Extensions.swift
 //  Aura_iOS
@@ -25,7 +27,7 @@ extension GoalPreference {
             id: self.id,
             title: self.title,
             isCustom: self.isCustom,
-            completed: didComplete
+            didComplete: didComplete // ✅ Corrected label to match model
         )
     }
 }

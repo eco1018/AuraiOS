@@ -13,5 +13,5 @@ struct ActionSubmission: Codable, Identifiable {
     var title: String           // Copy of the original title at time of submission
     var isFixed: Bool           // True for "Self Harm" and "Suicide"
     var isCustom: Bool          // True if user created this action manually
-    var occurred: Bool          // True if the user marked this as occurring on that day
+    var didOccur: Bool          // ✅ Renamed from 'occurred' to match ViewModel
 }

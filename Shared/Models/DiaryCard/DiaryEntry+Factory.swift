@@ -1,3 +1,4 @@
+
 //
 //  DiaryEntry+Factory.swift
 //  Aura_iOS
@@ -18,14 +19,14 @@ extension DiaryEntry {
             userID: userID,
             date: now,
             timeOfDay: timeOfDay,
-            createdAt: now,
             actions: [],
             urges: [],
             goals: [],
-            emotions: EmotionRating.defaultEmotions(for: userID, entryID: id),
+            emotionRatings: EmotionRating.defaultEmotions(for: userID, entryID: id),
             tookMedications: nil,
             diaryNote: "",
-            moodScore: nil
+//            moodScore: nil,
+            createdAt: now
         )
     }
 }

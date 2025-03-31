@@ -11,5 +11,5 @@ struct GoalSubmission: Codable, Identifiable {
     var id: String            // Matches the GoalPreference.id
     var title: String         // Title copied from original preference
     var isCustom: Bool        // Copied from original preference
-    var completed: Bool       // Did the user complete it today?
+    var didComplete: Bool     // ✅ Renamed to match ViewModel
 }
