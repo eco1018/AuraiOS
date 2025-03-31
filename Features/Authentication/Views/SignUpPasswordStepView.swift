@@ -34,3 +34,12 @@ struct SignUpPasswordStepView: View {
         .padding()
     }
 }
+
+#Preview {
+    SignUpPasswordStepView(
+        password: .constant(""),
+        onSubmit: {
+            print("Create Account tapped")
+        }
+    )
+}

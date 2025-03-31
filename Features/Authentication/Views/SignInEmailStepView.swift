@@ -38,3 +38,11 @@ struct SignInEmailStepView: View {
         .padding()
     }
 }
+#Preview {
+    SignInEmailStepView(
+        email: .constant("test@example.com"),
+        onNext: { isNewUser in
+            print(isNewUser ? "Navigate to Sign Up" : "Navigate to Sign In")
+        }
+    )
+}

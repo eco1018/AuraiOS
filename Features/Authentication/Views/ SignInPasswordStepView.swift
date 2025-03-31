@@ -46,3 +46,15 @@ struct SignInPasswordStepView: View {
         .padding()
     }
 }
+
+#Preview {
+    @State var previewPassword = "password123"
+    
+    return SignInPasswordStepView(
+        email: "test@example.com",
+        password: .constant("password123"),
+        onSubmit: {
+            print("Submit tapped")
+        }
+    )
+}

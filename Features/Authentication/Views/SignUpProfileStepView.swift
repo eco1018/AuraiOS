@@ -58,3 +58,13 @@ struct SignUpProfileStepView: View {
     }
 }
 
+#Preview {
+    SignUpProfileStepView(
+        firstName: .constant("Ella"),
+        lastName: .constant("Sadduq"),
+        birthdate: .constant(Date(timeIntervalSince1970: 631152000)), // Example: Jan 1, 1990
+        onNext: {
+            print("Proceed to password step")
+        }
+    )
+}
