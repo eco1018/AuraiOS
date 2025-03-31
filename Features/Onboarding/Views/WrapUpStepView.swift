@@ -1,6 +1,13 @@
 //
 //  WrapUpStepView.swift
 
+//
+//  WrapUpStepView.swift
+//  Aura_iOS
+//
+//  Created by Ella A. Sadduq on 3/30/25.
+//
+
 import SwiftUI
 
 struct WrapUpStepView: View {
@@ -62,7 +69,7 @@ struct WrapUpStepView: View {
 
         do {
             try await onboardingVM.completeOnboarding(for: uid, using: onboardingCoordinator)
-            await authVM.loadUserProfile(for: uid)
+            try await authVM.loadUserProfile(for: uid)
         } catch {
             errorMessage = "Failed to save profile: \(error.localizedDescription)"
         }

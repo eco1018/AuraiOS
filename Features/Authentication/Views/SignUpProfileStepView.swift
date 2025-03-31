@@ -4,12 +4,19 @@
 //
 //  Created by Ella A. Sadduq on 3/30/25.
 //
+//
+//  SignUpProfileStepView.swift
+//  Aura_iOS
+//
+//  Created by Ella A. Sadduq on 3/30/25.
+//
+
 import SwiftUI
 
 struct SignUpProfileStepView: View {
     @Binding var firstName: String
     @Binding var lastName: String
-    @Binding var age: String
+    @Binding var birthdate: Date
 
     var onNext: () -> Void
 
@@ -31,18 +38,23 @@ struct SignUpProfileStepView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(12)
 
-            TextField("Age", text: $age)
-                .keyboardType(.numberPad)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(12)
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Birthdate")
+                    .font(.headline)
+
+                DatePicker("Birthdate", selection: $birthdate, in: ...Date(), displayedComponents: .date)
+                    .datePickerStyle(.graphical)
+                    .labelsHidden()
+            }
+            .padding(.horizontal)
 
             Button("Next: Create Password") {
                 onNext()
             }
-            .disabled(firstName.isEmpty || lastName.isEmpty || age.isEmpty)
+            .disabled(firstName.isEmpty || lastName.isEmpty)
             .padding(.top, 16)
         }
         .padding()
     }
 }
+

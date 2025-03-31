@@ -4,6 +4,13 @@
 //
 //  Created by Ella A. Sadduq on 3/30/25.
 //
+//
+//  OnboardingViewModel.swift
+//  Aura_iOS
+//
+//  Created by Ella A. Sadduq on 3/30/25.
+//
+
 import Foundation
 
 @MainActor
@@ -41,17 +48,21 @@ final class OnboardingViewModel: ObservableObject {
         let finalProfile = UserProfile(
             id: userID,
             identity: UserIdentity(
+                id: userID,
                 firstName: coordinator.firstName,
                 lastName: coordinator.lastName,
-                email: "", // You can fill this in from Firebase later
-                age: Calendar.current.dateComponents([.year], from: coordinator.birthdate, to: now).year ?? 0
+                email: "", // You can populate this from Firebase later
+                birthdate: coordinator.birthdate,
+                createdAt: now,
+                lastUpdated: now,
+                consentedToAnalytics: true
             ),
             actions: coordinator.actions,
             urges: coordinator.urges,
             goals: coordinator.goals,
             takesMedications: coordinator.takesMedications,
             medications: coordinator.medications,
-            notificationPreference: coordinator.notificationPreference,
+            notificationPreferences: coordinator.notificationPreference,
             hasCompletedOnboarding: true,
             consentedToAnalytics: true,
             createdAt: now,

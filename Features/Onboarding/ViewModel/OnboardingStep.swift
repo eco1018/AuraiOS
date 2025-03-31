@@ -11,14 +11,11 @@ enum OnboardingStep: Int, CaseIterable, Codable {
     case profileSetup           // 2
     case diaryIntro             // 3
     case actionsIntro           // 4
-    case actionsSelection       // 5
-    case actionsTransition      // 6
+    case actionsSelection       // 5// 6
     case urgesIntro             // 7
-    case urgesSelection         // 8
-    case urgesTransition        // 9
+    case urgesSelection         // 8// 9
     case goalsIntro             // 10
-    case goalsSelection         // 11
-    case goalsTransition        // 12
+    case goalsSelection         // 11// 12
     case medicationsIntro       // 13
     case medicationAdding       // 14
     case medicationReminder     // 15

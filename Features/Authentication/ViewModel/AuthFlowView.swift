@@ -4,6 +4,13 @@
 //
 //  Created by Ella A. Sadduq on 3/30/25.
 //
+//
+//  AuthFlowView.swift
+//  Aura_iOS
+//
+//  Created by Ella A. Sadduq on 3/30/25.
+//
+
 import SwiftUI
 
 struct AuthFlowView: View {
@@ -54,7 +61,7 @@ struct AuthFlowView: View {
                 SignUpProfileStepView(
                     firstName: $coordinator.firstName,
                     lastName: $coordinator.lastName,
-                    age: $coordinator.age
+                    birthdate: $coordinator.birthdate
                 ) {
                     coordinator.goToNextStep()
                 }
@@ -69,7 +76,7 @@ struct AuthFlowView: View {
                             password: coordinator.password,
                             firstName: coordinator.firstName,
                             lastName: coordinator.lastName,
-                            age: Int(coordinator.age) ?? 0
+                            birthdate: coordinator.birthdate
                         )
                     }
                 }

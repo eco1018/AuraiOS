@@ -1,17 +1,16 @@
 //
+//
+//
 //  RootView.swift
 //  Aura_iOS
 //
 //  Created by Ella A. Sadduq on 3/30/25.
 //
 
-// RootView.swift
-// Aura_iOS
-
 import SwiftUI
 
 struct RootView: View {
-    
+
     // MARK: - Coordinators and ViewModels
     @StateObject private var appCoordinator = AppCoordinator()
     @StateObject private var authVM: AuthViewModel
@@ -19,7 +18,7 @@ struct RootView: View {
     @StateObject private var onboardingVM = OnboardingViewModel(
         onboardingService: AppServices.onboardingService
     )
-    
+
     @State private var showingDiaryCard = false
 
     // MARK: - Init
@@ -29,8 +28,9 @@ struct RootView: View {
         _authVM = StateObject(wrappedValue: AuthViewModel(appCoordinator: coordinator))
     }
 
+    // MARK: - Body
     var body: some View {
-        Group {
+        VStack {
             if !appCoordinator.isLoggedIn {
                 AuthFlowView()
                     .environmentObject(authVM)
@@ -68,13 +68,13 @@ struct RootView: View {
                 }
 
             } else {
-                // 👇 Graceful fallback in case of delayed profile fetch
+                // Graceful fallback in case of delayed profile fetch
                 ProgressView("Loading profile...")
                     .onAppear {
                         if let uid = appCoordinator.currentUserID,
                            authVM.userProfile == nil {
                             Task {
-                                try? await authVM.fetchUserProfileIfNeeded(for: uid)
+                                try? await authVM.loadUserProfile(for: uid)
                             }
                         }
                     }
@@ -82,6 +82,7 @@ struct RootView: View {
         }
     }
 
+    // MARK: - Helpers
     private func resolveTimeOfDay() -> String {
         let hour = Calendar.current.component(.hour, from: Date())
         return hour < 15 ? "Morning" : "Evening"

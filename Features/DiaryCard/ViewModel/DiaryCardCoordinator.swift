@@ -1,4 +1,5 @@
 //
+//
 //  DiaryCardCoordinator.swift
 //  Aura_iOS
 //
@@ -25,7 +26,7 @@ final class DiaryCardCoordinator: ObservableObject {
     init(userID: String, timeOfDay: String) {
         self.userID = userID
         self.timeOfDay = timeOfDay
-        self.viewModel = DiaryCardViewModel(userID: userID)
+        self.viewModel = DiaryCardViewModel(userID: userID, timeOfDay: timeOfDay)
     }
 
     // MARK: - Navigation
@@ -42,6 +43,6 @@ final class DiaryCardCoordinator: ObservableObject {
 
     func restart() {
         currentStep = .emotions
-        viewModel = DiaryCardViewModel(userID: userID)
+        viewModel = DiaryCardViewModel(userID: userID, timeOfDay: timeOfDay)
     }
 }
