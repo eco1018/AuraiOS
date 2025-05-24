@@ -3,6 +3,7 @@
 //  Aura_iOS
 
 //
+//
 //  SignInPasswordStepView.swift
 //  Aura_iOS
 //
@@ -14,7 +15,7 @@ import SwiftUI
 struct SignInPasswordStepView: View {
     let email: String
     @Binding var password: String
-    let onSubmit: () -> Void  // ✅ Allows parent view to handle sign-in
+    let onSubmit: () -> Void
 
     var body: some View {
         VStack(spacing: 20) {
@@ -28,9 +29,8 @@ struct SignInPasswordStepView: View {
 
             SecureField("Password", text: $password)
                 .textContentType(.password)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
+                .textFieldStyle(.roundedBorder)
+                .padding(.horizontal)
 
             Button(action: {
                 onSubmit()
@@ -38,19 +38,19 @@ struct SignInPasswordStepView: View {
                 Text("Sign In")
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.accentColor)
+                    .background(password.isEmpty ? Color.gray.opacity(0.3) : Color.accentColor)
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
+            .disabled(password.isEmpty)
+            .padding(.horizontal)
         }
         .padding()
     }
 }
 
 #Preview {
-    @State var previewPassword = "password123"
-    
-    return SignInPasswordStepView(
+    SignInPasswordStepView(
         email: "test@example.com",
         password: .constant("password123"),
         onSubmit: {

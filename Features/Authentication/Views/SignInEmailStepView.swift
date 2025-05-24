@@ -3,9 +3,6 @@
 //  SignInEmailStepView.swift
 //  Aura
 //
-//  Created by Ella A. Sadduq on 3/30/25.
-//
-
 //
 //  SignInEmailStepView.swift
 //  Aura
@@ -32,23 +29,32 @@ struct SignInEmailStepView: View {
             TextField("Email", text: $email)
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(12)
+                .textFieldStyle(.roundedBorder)
+                .padding(.horizontal)
 
             // ➡️ Navigation Buttons
             VStack(spacing: 16) {
-                Button("Next") {
+                Button(action: {
                     onNext(false)
+                }) {
+                    Text("Next")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(email.isEmpty ? Color.gray.opacity(0.3) : Color.accentColor)
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
                 }
                 .disabled(email.isEmpty)
 
-                Button("I need to sign up") {
+                Button(action: {
                     onNext(true)
+                }) {
+                    Text("I need to sign up")
+                        .font(.subheadline)
+                        .foregroundColor(.blue)
                 }
-                .font(.subheadline)
-                .foregroundColor(.blue)
             }
+            .padding(.horizontal)
         }
         .padding()
     }

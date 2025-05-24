@@ -1,9 +1,13 @@
 //
 //  SignUpPasswordStepView.swift
 //  Aura_iOS
+///
+//  SignUpPasswordStepView.swift
+//  Aura_iOS
 //
 //  Created by Ella A. Sadduq on 3/30/25.
 //
+
 import SwiftUI
 
 struct SignUpPasswordStepView: View {
@@ -17,15 +21,21 @@ struct SignUpPasswordStepView: View {
                 .padding(.top, 24)
 
             SecureField("Password", text: $password)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(12)
+                .textFieldStyle(.roundedBorder)
+                .padding(.horizontal)
 
-            Button("Create Account") {
+            Button(action: {
                 onSubmit()
+            }) {
+                Text("Create Account")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(password.count < 6 ? Color.gray.opacity(0.3) : Color.accentColor)
+                    .foregroundColor(.white)
+                    .cornerRadius(12)
             }
             .disabled(password.count < 6)
-            .padding(.top, 16)
+            .padding(.horizontal)
 
             Text("Password must be at least 6 characters.")
                 .font(.footnote)
