@@ -56,23 +56,6 @@
 		C8A58FE92D996C3A00CB8195 /* Aura_iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Aura_iOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		C8881E102DE210F400F8D83E /* Exceptions for "Root" folder in "Aura_iOSTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"GoogleService-Info.plist",
-			);
-			target = C8A58FDE2D996C3A00CB8195 /* Aura_iOSTests */;
-		};
-		C8881E112DE210F400F8D83E /* Exceptions for "Root" folder in "Aura_iOSUITests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"GoogleService-Info.plist",
-			);
-			target = C8A58FE82D996C3A00CB8195 /* Aura_iOSUITests */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C84F263F2DDF23C300E1D280 /* Files */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -96,10 +79,6 @@
 		};
 		C8A58FFC2D996C9F00CB8195 /* Root */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				C8881E102DE210F400F8D83E /* Exceptions for "Root" folder in "Aura_iOSTests" target */,
-				C8881E112DE210F400F8D83E /* Exceptions for "Root" folder in "Aura_iOSUITests" target */,
-			);
 			path = Root;
 			sourceTree = "<group>";
 		};

@@ -1,10 +1,5 @@
 
-//
-//  AuthViewModel.swift
-//  Aura_iOS
-//
-//  Created by Ella A. Sadduq on 3/30/25.
-//
+
 //
 //  AuthViewModel.swift
 //  Aura_iOS
@@ -31,6 +26,8 @@ final class AuthViewModel: ObservableObject {
     @Published var isSignedIn: Bool = false
     @Published var userProfile: UserProfile?
     @Published var onboardingStep: OnboardingStep?
+    @Published var isLoading: Bool = false
+    @Published var errorMessage: String?
 
     // MARK: - Init
     
@@ -57,50 +54,72 @@ final class AuthViewModel: ObservableObject {
     // MARK: - Sign In
     
     func signIn(email: String, password: String) async throws {
-        try await authService.signIn(email: email, password: password)
-        if let uid = userID {
-            try await loadUserProfile(for: uid)
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+            try await authService.signIn(email: email, password: password)
+            if let uid = userID {
+                try await loadUserProfile(for: uid)
+            }
+        } catch {
+            errorMessage = error.localizedDescription
+            print("Sign in error: \(error)")
+            throw error
         }
+        
+        isLoading = false
     }
 
     // MARK: - Sign Up
     
     func signUp(email: String, password: String, firstName: String, lastName: String, birthdate: Date) async throws {
-        let uid = try await authService.signUp(email: email, password: password)
-        let now = Date()
+        isLoading = true
+        errorMessage = nil
         
-        let profile = UserProfile(
-            id: uid,
-            identity: UserIdentity(
+        do {
+            let uid = try await authService.signUp(email: email, password: password)
+            let now = Date()
+            
+            let profile = UserProfile(
                 id: uid,
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                birthdate: birthdate,
-                createdAt: now,
-                lastUpdated: now,
-                consentedToAnalytics: false
-            ),
-            actions: [],
-            urges: [],
-            goals: [],
-            takesMedications: false,
-            medications: [],
-            notificationPreferences: NotificationPreference(
-                frequency: .oncePerDay,
-                morningReminderTime: nil,
-                eveningReminderTime: nil,
+                identity: UserIdentity(
+                    id: uid,
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    birthdate: birthdate,
+                    createdAt: now,
+                    lastUpdated: now,
+                    consentedToAnalytics: false
+                ),
+                actions: [],
+                urges: [],
+                goals: [],
+                takesMedications: false,
+                medications: [],
+                notificationPreferences: NotificationPreference(
+                    frequency: .oncePerDay,
+                    morningReminderTime: nil,
+                    eveningReminderTime: nil,
+                    createdAt: now,
+                    lastUpdated: now
+                ),
+                hasCompletedOnboarding: false,
+                consentedToAnalytics: false,
                 createdAt: now,
                 lastUpdated: now
-            ),
-            hasCompletedOnboarding: false,
-            consentedToAnalytics: false,
-            createdAt: now,
-            lastUpdated: now
-        )
+            )
+            
+            try await userProfileService.saveUserProfile(profile, for: uid)
+            try await loadUserProfile(for: uid)
+        } catch {
+            errorMessage = error.localizedDescription
+            print("Sign up error: \(error)")
+            throw error
+        }
         
-        try await userProfileService.saveUserProfile(profile, for: uid)
-        try await loadUserProfile(for: uid)
+        isLoading = false
     }
 
     // MARK: - Sign Out
@@ -110,6 +129,7 @@ final class AuthViewModel: ObservableObject {
         self.isSignedIn = false
         self.userProfile = nil
         self.onboardingStep = nil
+        self.errorMessage = nil
         appCoordinator.resetAppState()
     }
 
@@ -137,10 +157,16 @@ final class AuthViewModel: ObservableObject {
     // MARK: - Profile Loading & Updates
     
     func loadUserProfile(for userID: String) async throws {
-        let profile = try await userProfileService.loadUserProfile(for: userID)
-        self.userProfile = profile
-        self.onboardingStep = profile.hasCompletedOnboarding ? nil : .welcome
-        self.appCoordinator.hasCompletedOnboarding = profile.hasCompletedOnboarding
+        do {
+            let profile = try await userProfileService.loadUserProfile(for: userID)
+            self.userProfile = profile
+            self.onboardingStep = profile.hasCompletedOnboarding ? nil : .welcome
+            self.appCoordinator.hasCompletedOnboarding = profile.hasCompletedOnboarding
+        } catch {
+            // If profile doesn't exist yet, that's okay during sign up
+            print("Profile load error (may be expected for new users): \(error)")
+            // Don't throw here, as this is expected for new users
+        }
     }
 
     func updateUserProfile(_ updatedProfile: UserProfile) async {
@@ -152,6 +178,7 @@ final class AuthViewModel: ObservableObject {
             self.onboardingStep = updatedProfile.hasCompletedOnboarding ? nil : onboardingStep
             self.appCoordinator.hasCompletedOnboarding = updatedProfile.hasCompletedOnboarding
         } catch {
+            errorMessage = "Failed to update profile: \(error.localizedDescription)"
             print("Failed to update profile: \(error)")
         }
     }
